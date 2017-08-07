@@ -1,6 +1,5 @@
 # serpens
-SERPENS: SEaRch PEst and Nuisance Species (A CLARIAH Research Pilot Project)
-================================
+*SERPENS: SEaRch PEst and Nuisance Species (A CLARIAH Research Pilot Project)* 
 
 _work in progress_
 
@@ -10,11 +9,11 @@ Data
 -----
 Newspaper articles from the Dutch National Library's [Delpher](http://delpher.nl) portal are used in this project. The directory 'Annotations' contains spreadsheet files with information about individual newspaper articles such as their publication date, newspaper, article type and document identifier and whether the article reports on a nuisance species or the species name is used in a different context. We discern 8 categories: 
 
-**Natural history** General articles about the animal, e.g. it subsists on birds or x number were stuffed and became part of a museum collection
-**Nuisance, material damages** The article mentions the animal as causing ma- terial damages, e.g. beetles damaging crops or lynxes killing chickens
-**Nuisance, immaterial damages** The article mentions the animal as a nui- sance without material damages e.g. polecats found to walk over someone’s face whilst they were in bed, or (possibly irrational) fear for a certain animal
-**Pest control** Organised hunt to bring down the number of pest species, e.g. ad for hunting dogs
-**Hunt for economic reasons** Hunting to use the fur, meat or other parts of the animal e.g. an article mentioning that the hunting season has started again and that polecat fur earns the hunter a good price
-**Prevention** Non-lethal actions against pest species, e.g. advice in the newspa- per on which plants keep away pest species
-**Accidents** The article mentions an unintentional encounter with the animal, e.g. roadkill
-**Figurative** Figurative language featuring the animal e.g. eyes like a lynx Other Articles not pertaining to the animal, e.g. a ship named ‘Lynx’ or a person whose last name is ‘Bunzing’
+**Natural history** General articles about the animal, e.g. it subsists on birds or x number were stuffed and became part of a museum collection  
+**Nuisance, material damages** The article mentions the animal as causing ma- terial damages, e.g. beetles damaging crops or lynxes killing chickens  
+**Nuisance, immaterial damages** The article mentions the animal as a nui- sance without material damages e.g. polecats found to walk over someone’s face whilst they were in bed, or (possibly irrational) fear for a certain animal  
+**Pest control** Organised hunt to bring down the number of pest species, e.g. ad for hunting dogs  
+**Hunt for economic reasons** Hunting to use the fur, meat or other parts of the animal e.g. an article mentioning that the hunting season has started again and that polecat fur earns the hunter a good price  
+**Prevention** Non-lethal actions against pest species, e.g. advice in the newspa- per on which plants keep away pest species  
+**Accidents** The article mentions an unintentional encounter with the animal, e.g. roadkill  
+**Figurative** Figurative language featuring the animal e.g. eyes like a lynx Other Articles not pertaining to the animal, e.g. a ship named ‘Lynx’ or a person whose last name is ‘Bunzing’  
