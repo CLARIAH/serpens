@@ -1,6 +1,8 @@
 Small utilities for KB data management
 
 
+! You need permission from KB to use the SRU api. Please consult https://www.kb.nl/sites/default/files/docs/terms-of-use-open-datasets-kb-nl-en-20130529.pdf or contact dataservices@kb.nl
+
 Building:
 
 * Ensure JDK 8 and the scala build tool sbt (https://www.scala-sbt.org/) is installed
@@ -48,7 +50,6 @@ Article file format and included metadata
 ```
 
 * the original KB metadata is in listBibl id="articleMetadata"
-* Example: https://github.com/INL/Serpens/blob/master/data/ddd_010336852_mpeg21_a0107_ocr.xml
 
 Configuration:
 
