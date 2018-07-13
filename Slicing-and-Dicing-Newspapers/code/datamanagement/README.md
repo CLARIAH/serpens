@@ -5,7 +5,7 @@ Small utilities for KB data management
 
 Building:
 
-* Ensure JDK 8 and the scala build tool sbt (https://www.scala-sbt.org/) is installed
+* Ensure JDK 8 and the scala build tool sbt (https://www.scala-sbt.org/) are installed
 * Build a jar including dependencies with "sbt assembly"
 
 
@@ -18,7 +18,7 @@ Command line:
 * Print topic keywords: ```java serpens.PruneKeywords datasets/hermelijn.mallet hermelijn.kw```  
 * Create HTML with topics and example documents: ```java serpens.ViewTopics datasets/hermelijn.zip datasets/hermelijn.mallet```
  
-Article file format and included metadata 
+Article file format and included metadata
 
 * Pseudo-TEI (title should have head, etc)
 * Metadata (in internal INT style) in listBibl[@id="inlMetadata"]
