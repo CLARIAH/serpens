@@ -20,28 +20,30 @@ Medata en bestandsformat
 * Metadata naar interne INT velden geconverteerd in listBibl id="inlMetadata"
 * Door simpel profiletooltje toegevoegde data:
 
+```
 <pre>
-  &lt;listBibl id="profile">
-          &lt;interpGrp type="profile.numberUppercase">
-            &lt;interp value="109"/>
-          &lt;/interpGrp>
-          &lt;interpGrp type="profile.numberInLexicon">
-            &lt;interp value="115"/>
-          &lt;/interpGrp>
-          &lt;interpGrp type="profile.lexiconCoverage">
-            &lt;interp value="0.35714285714285715"/>
-          &lt;/interpGrp>
-          &lt;interpGrp type="profile.numberOfTokens">
-            &lt;interp value="354"/>
-          &lt;/interpGrp>
-          &lt;interpGrp type="profile.numberNumerical">
-            &lt;interp value="32"/>
-          &lt;/interpGrp>
-          &lt;interpGrp type="profile.lang">
-            &lt;interp value="nl"/>
-          &lt;/interpGrp>
-   &lt;/listBibl>
+  <listBibl id="profile">
+          <interpGrp type="profile.numberUppercase">
+            <interp value="109"/>
+          </interpGrp>
+          <interpGrp type="profile.numberInLexicon">
+            <interp value="115"/>
+          </interpGrp>
+          <interpGrp type="profile.lexiconCoverage">
+            <interp value="0.35714285714285715"/>
+          </interpGrp>
+          <interpGrp type="profile.numberOfTokens">
+            <interp value="354"/>
+          </interpGrp>
+          <interpGrp type="profile.numberNumerical">
+            <interp value="32"/>
+          </interpGrp>
+          <interpGrp type="profile.lang">
+            <interp value="nl"/>
+          </interpGrp>
+   </listBibl>
 </pre>
+```
 
 * de originele KB metadata in listBibl id="articleMetadata"
 * Voorbeeldbestandje https://github.com/INL/Serpens/blob/master/data/ddd_010336852_mpeg21_a0107_ocr.xml
@@ -50,12 +52,13 @@ Configuratie:
 
 * Zet een bestandje in conf/settings.conf
 * Voorbeeld:
-
+```
 batchSize = 500
 defaultStartDate = 01-01-1800
 defaultEndDate = 31-12-1939
 defaultCollection = DDD_artikel
 defaultServer =  ???
+```
 
 * Minimale invulling: defaultServer
 
