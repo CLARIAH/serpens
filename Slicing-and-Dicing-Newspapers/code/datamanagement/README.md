@@ -9,20 +9,18 @@ Building:
 
 Command line:
 
-* Download zoekresultaten in pseudoTEI met metadata: ```java -classpath ./dist/SerpensDownloader.jar serpens.Download /tmp/bonobo.zip bonobo```
-** Er staat nu een bestandje properties.txt in de zip met daarin informatie over de zoekopdracht
-* Concordanties (output moet nog wat gefatsoeneerd):  ```java -classpath ./dist/SerpensDownloader.jar  serpens KBKwic wisent```
-* TSV  bestand maken uit zip met pseudoTEI'tjes ```java -classpath dist/SerpensDownloader.jar serpens.TSVWriter /tmp/bonobo.zip``` 
-* Sample maken van grotere zip ```java serpens.Sample complete.zip sample.zip 500``` 
-* Topic model maken (100 topics default): ```java serpens.TopicModeling datasets/hermelijn.zip datasets/hermelijn.mallet 30```
-* Topic keywords: ```java serpens.PruneKeywords datasets/hermelijn.mallet hermelijn.kw```  
-* Bestandje met topics en voorbeeldtekstjes: ```java serpens.ViewTopics datasets/hermelijn.zip datasets/hermelijn.mallet```
+* Download search results to a zip containing articles with metadata converted to pseudo-TEI: ```java -classpath ./dist/SerpensDownloader.jar serpens.Download /tmp/bonobo.zip bonobo```
+* from a zip with downloaded artictles to tab-separated file: ```java -classpath dist/SerpensDownloader.jar serpens.TSVWriter /tmp/bonobo.zip``` 
+* Draw a random sample from a larger zip: ```java serpens.Sample complete.zip sample.zip 500``` 
+* Create topic model  (100 topics default): ```java serpens.TopicModeling datasets/hermelijn.zip datasets/hermelijn.mallet 30```
+* Print topic keywords: ```java serpens.PruneKeywords datasets/hermelijn.mallet hermelijn.kw```  
+* Create HTML with topics and example documents: ```java serpens.ViewTopics datasets/hermelijn.zip datasets/hermelijn.mallet```
  
-Metadata en bestandsformat
+Aryicle file format and metadata 
 
-* PseudoTEI (title zou eigenlijk head moeten zijn, wellicht nog meer)
-* Metadata naar interne INT velden geconverteerd in listBibl id="inlMetadata"
-* Door simpel profiletooltje toegevoegde data:
+* Pseudo-TEI (title should have head, etc)
+* Metadata (in internal INT style) in listBibl[@id="inlMetadata"]
+* Some profiling data (language, lexicon coveraged) is added in a separate section 
 
 ```
 <pre>
@@ -49,13 +47,13 @@ Metadata en bestandsformat
 </pre>
 ```
 
-* de originele KB metadata in listBibl id="articleMetadata"
-* Voorbeeldbestandje https://github.com/INL/Serpens/blob/master/data/ddd_010336852_mpeg21_a0107_ocr.xml
+* the original KB metadata is in listBibl id="articleMetadata"
+* Example: https://github.com/INL/Serpens/blob/master/data/ddd_010336852_mpeg21_a0107_ocr.xml
 
-Configuratie:
+Configuration:
 
-* Zet een bestandje in conf/settings.conf
-* Voorbeeld:
+* Config file is conf/settings.conf
+* Example:
 ```
 batchSize = 500
 defaultStartDate = 01-01-1800
@@ -64,7 +62,7 @@ defaultCollection = DDD_artikel
 defaultServer =  ???
 ```
 
-* Minimale invulling: defaultServer
+* Minimally supply a value for defaultServer
 
 
 // documentatie: https://www.kb.nl/sites/default/files/docs/snelstart-anp_en.pdf
