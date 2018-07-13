@@ -1,4 +1,4 @@
-Wat scriptjes om met KB data om te gaan
+Small utilities for KB data management
 
 
 Building:
@@ -16,7 +16,7 @@ Command line:
 * Print topic keywords: ```java serpens.PruneKeywords datasets/hermelijn.mallet hermelijn.kw```  
 * Create HTML with topics and example documents: ```java serpens.ViewTopics datasets/hermelijn.zip datasets/hermelijn.mallet```
  
-Aryicle file format and metadata 
+Article file format and included metadata 
 
 * Pseudo-TEI (title should have head, etc)
 * Metadata (in internal INT style) in listBibl[@id="inlMetadata"]
@@ -63,10 +63,3 @@ defaultServer =  ???
 ```
 
 * Minimally supply a value for defaultServer
-
-
-// documentatie: https://www.kb.nl/sites/default/files/docs/snelstart-anp_en.pdf
-// https://github.com/KBNLresearch/KB-python-API
-// http://digitopia.nl/workshop/cheatsheet.html
-// https://github.com/renevoorburg/oai2linerec
- 
