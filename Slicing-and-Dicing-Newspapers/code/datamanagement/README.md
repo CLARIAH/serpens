@@ -6,6 +6,9 @@ Building:
 * Ensure JDK 8 and the scala build tool sbt (https://www.scala-sbt.org/) is installed
 * Build a jar including dependencies with "sbt assembly"
 
+
+Command line:
+
 * Download zoekresultaten in pseudoTEI met metadata: ```java -classpath ./dist/SerpensDownloader.jar serpens.Download /tmp/bonobo.zip bonobo```
 ** Er staat nu een bestandje properties.txt in de zip met daarin informatie over de zoekopdracht
 * Concordanties (output moet nog wat gefatsoeneerd):  ```java -classpath ./dist/SerpensDownloader.jar  serpens KBKwic wisent```
@@ -15,7 +18,8 @@ Building:
 * Topic keywords: ```java serpens.PruneKeywords datasets/hermelijn.mallet hermelijn.kw```  
 * Bestandje met topics en voorbeeldtekstjes: ```java serpens.ViewTopics datasets/hermelijn.zip datasets/hermelijn.mallet```
  
-Medata en bestandsformat
+Metadata en bestandsformat
+
 * PseudoTEI (title zou eigenlijk head moeten zijn, wellicht nog meer)
 * Metadata naar interne INT velden geconverteerd in listBibl id="inlMetadata"
 * Door simpel profiletooltje toegevoegde data:
