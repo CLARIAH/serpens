@@ -2,7 +2,18 @@ package serpens
 import scala.xml._
 import java.io._
 
-object KBKwic
+object KBKwic extends KBKwicker()
+{
+
+}
+
+object DiamondKwic extends KBKwicker()
+{
+  override def containsOneOf(haystack:String, needles: Set[String]):Boolean =
+    needles.exists(n => haystack.toLowerCase.equals(n.toLowerCase()))
+}
+
+case class KBKwicker()
 {
   import Tokenizer._
   import SRU._
@@ -12,13 +23,16 @@ object KBKwic
 
   def containsOneOf(haystack:String, needles: Set[String]):Boolean =
     needles.exists(n => haystack.toLowerCase.contains(n.toLowerCase()))  // map(n => haystack.toLowerCase.contains(n.toLowerCase()) ).reduce((a,b) => a || b)
+
+
   def concordance(query:TextQuery, text:String):List[Concordance] =
   {
     val tokens = tokenize(text)
 
     val terms = SRU.termsIn(query).map(_.toLowerCase)
 
-    val matchPositions = (0 to tokens.length-1).toList.filter(i =>  containsOneOf(tokens(i).token, terms) )
+
+    val matchPositions = (0 to tokens.length-1).toList.filter(i =>  containsOneOf(tokens(i).token, terms) ) // dit anders (kunnen) doen
 
 
 

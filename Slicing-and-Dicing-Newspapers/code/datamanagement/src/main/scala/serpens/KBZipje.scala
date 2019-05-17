@@ -97,7 +97,7 @@ class KBZipje(filename: String)
 
   def setProperty(name: String, value: String):Unit = { properties.setProperty(name, value); saveProperties(); properties.list(System.out) }
 
-  def setQueryTerms(baseTerm: String):Unit = setProperty("query", Download.expandRestricted(baseTerm).toSet.mkString(","))
+  def setQueryTerms(baseTerm: String):Unit = setProperty("query", Download.expandRestrictedWithLexiconService(baseTerm).toSet.mkString(","))
 
   def getProperty(name:String):String = properties.getProperty(name)
 
@@ -233,6 +233,16 @@ object PrintAllTokens
     zip.documentStream.flatMap(n => n().text.split("\\s+")).take(max).foreach(println)
   }
 }
+
+object PrintAllTokensNoPunct
+{
+  def main(args: Array[String]):Unit = {
+    val zip = new KBZipje(args(0))
+    val max = if (args.size > 1) args(1).toInt else Int.MaxValue
+    zip.documentStream.flatMap(n => n().text.split("\\s+")).take(max).map(w => Tokenizer.tokenizeOne(w).token).filter(_.nonEmpty).foreach(println)
+  }
+}
+
 
 object ZipWordCount
 {

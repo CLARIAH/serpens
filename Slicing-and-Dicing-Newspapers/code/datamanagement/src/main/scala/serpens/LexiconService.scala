@@ -1,20 +1,38 @@
 package serpens
+import java.net.URLEncoder
+
 import LexiconService.{database, serviceURL}
 
 import scala.xml._
+import scala.util.{Failure, Success, Try}
 
 case class LexiconService(serviceURL: String, database: String)
 {
-  def getWordforms(lemma: String):List[String] =
+  def mapPoS(s: String) =
   {
-    (XML.load(s"$serviceURL/get_wordforms?database=$database&lemma="
-      + lemma.toLowerCase)
-      \\ "found_wordforms").toList.map(_.text.toLowerCase).filter(_.matches("^(\\p{L})*$")).filter(!BeestenZoeker.onBeest(_))
+    if (database == "molex" && s == "NOU") "NOU-C" else
+    if (database == "molex" && s == "ADJ") "AA" else s
+  }
+
+  def getWordforms(lemma: String, pos: Option[String] = None):List[String] =
+  {
+    val posPart = pos.map(mapPoS).map(x => s"&pos=$x").getOrElse("")
+    val encoded = URLEncoder.encode(lemma.toLowerCase())
+    val request = s"$serviceURL/get_wordforms?database=$database&lemma=" + encoded + posPart
+
+    val result = Try((XML.load(request)
+      \\ "found_wordforms").toList.map(_.text.toLowerCase).filter(_.matches("^(\\p{L})*$")).filter(!BeestenZoeker.onBeest(_))) match {
+      case Success(value) => value
+      case Failure(e) => {e.printStackTrace(); List()}
+    }
+    Console.err.println("LS:" + request + " ==> " + result)
+    result
   }
 
   def getLemmata(wordform: String):List[(String,String)] =
   {
-    (XML.load(s"$serviceURL/get_lemma?database=$database&wordform=" + wordform.toLowerCase)
+    val encoded = URLEncoder.encode(wordform.toLowerCase())
+    (XML.load(s"$serviceURL/get_lemma?database=$database&wordform=" + encoded)
       \\ "found_lemmata").toList.map(e => ((e \ "lemma").text, (e \ "pos").text))
   }
 }
@@ -29,8 +47,9 @@ object LexiconService extends LexiconService(defaults.serviceURL, defaults.datab
 {
    def main(args: Array[String]) : Unit =
    {
-     getWordforms("wereld").foreach(println)
-     getLemmata("kipt").foreach(println)
+     val searchTerm = args(0)
+     getWordforms(searchTerm).foreach(println)
+     getLemmata(searchTerm).foreach(println)
    }
 }
 
@@ -40,5 +59,15 @@ object MolexService extends LexiconService(defaults.serviceURL, "molex")
   {
     getWordforms("klagen").foreach(println)
     getLemmata("kipt").foreach(println)
+  }
+}
+
+object LexicaService 
+{
+  def main(args: Array[String]) : Unit =
+  {
+    val searchTerm = args(0)
+    (LexiconService.getWordforms(searchTerm) ++ MolexService.getWordforms(searchTerm)).foreach(println)
+    (LexiconService.getLemmata(searchTerm) ++ MolexService.getLemmata(searchTerm)).foreach(println)
   }
 }

@@ -84,7 +84,9 @@ case class Concordance(hitStart: Int, hitEnd: Int, tokenProperties:  Map[String,
     </Concordance>
   }
 
-  override def toString:String = f"$left%80s" + " \u169b"  + hit + "\u169c " + right + "\n\t\t" + (if (metadata.nonEmpty) metadata.values.mkString(";") else "")
+  def snippet = f"$left%80s" + " \u169b"  + hit + "\u169c " + right
+
+  override def toString:String = snippet + "\n\t\t" + (if (metadata.nonEmpty) metadata.values.mkString(";") else "")
 
   def toHTMLRow:Node = <tr align="right"><td>{left}</td><td><b>{hit}</b></td><td>{right}</td></tr>
   def toHTMLItem:Node = <li>{left} <b>{hit}</b> {right}</li>

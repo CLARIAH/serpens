@@ -157,11 +157,11 @@ object toTEI
       <interp value={value}/>
     </interpGrp>
 
-  def makeTEI(metadataRecord: Elem, text: Elem, id:String):Elem = makeTEI(metadataRecord, None, text, id)
+  def makeTEIWithoutMetadata(metadataRecord: Elem, text: Elem, id:String,  query: Option[SRUQuery]=None):Elem = makeTEI(metadataRecord, None, text, id, query)
 
   def makeInterpjes(x: Node) = x.child.filter(_.isInstanceOf[Elem]).map(x => <interpGrp type={x.label}><interp value={x.text}/></interpGrp>)
 
-  def makeTEI(metadataRecord: Elem, issueMetadata: Option[Elem], text: Elem, id:String):Elem =
+  def makeTEI(metadataRecord: Elem, issueMetadata: Option[Elem], text: Elem, id:String, query: Option[SRUQuery]=None, termsOfInterest: Set[String] = Set.empty[String]):Elem =
   {
     val plainText = text.text
     //scala.Console.err.println(plainText)
@@ -215,6 +215,21 @@ object toTEI
 
     def getField(name: String) = (mergedMeta \\ name).map(n => <interp value={n.text}/>)
 
+
+    val termsFound = (if (query.isDefined)
+      {
+        val terms = SRU.termsIn(query.get.query.textQuery).map(_.toLowerCase) ++ termsOfInterest.map(_.toLowerCase)
+
+        //val hightightedText = Highlighting.highlight(text, s => terms.contains(s.toLowerCase()))
+        // Console.err.println(terms)
+        val hits = Tokenizer.tokenize(text.text).filter(t => terms.contains(t.token.toLowerCase())).map(_.token).toSet
+        val hitCount = hits.size.toString
+
+        Seq(<interpGrp type="query"><interp value={query.get.toString}>{query.get}</interp></interpGrp>,
+          <interpGrp type="hits"><interp value={hits.mkString(",")}>{hits.mkString(",")}</interp></interpGrp>,
+          <interpGrp type="hitCount"><interp value={hitCount}>{hitCount}</interp></interpGrp>)
+      } else Seq())
+
     val moreMappedStuff = Seq(
       <interpGrp type="newspaperEdition">{getField("edition")}{getField("spatial")}</interpGrp>,
       <interpGrp type="medium"><interp value="krant"/></interpGrp>,
@@ -224,14 +239,12 @@ object toTEI
       <interpGrp type="sourceArticle">{getField("source")}</interpGrp>,
       <interpGrp type="copyrighHolder">{getField("rights")}</interpGrp>,
       <interpGrp type="copyrightOwner">{getField("rights")}</interpGrp>
-    )
+    ) ++ termsFound
 
 
     val textParent = if ((text \ "text").nonEmpty) (text \ "text")(0) else text
 
     val textContent = textParent.child
-
-
 
     val tei  =
     <TEI>
@@ -294,7 +307,7 @@ object toTEI
         x = XML.load(fromDir + "/" + n)
         id = (x \\ "identifier").text
         meta = (x \\ "recordData")(0).asInstanceOf[Elem]
-        tei = makeTEI(meta, x, id)
+        tei = makeTEIWithoutMetadata(meta, x, id)
       }
         yield
           save(toDir, tei, n.replaceAll("xml", "tei.xml"))

@@ -12,30 +12,6 @@ import scala.collection.JavaConverters._
 
 
 
-case class Settings(defaultServer: String="?", batchSize: Int=500, maxDocuments:Int=Int.MaxValue,
-                    defaultStartDate: String="01-01-1800", defaultEndDate:String = "31-12-1939")
-{
-  
-}
-
-object SettingsObject extends Settings()
-{
-  def fromFile(f: String):Settings =
-  {
-    val p = new java.util.Properties
-    p.load(new FileReader(f))
-    val props = p.stringPropertyNames().asScala // p.propertyNames()//.asScala.toSet.map(x => x.toString)
-    val map: Map[String,String] =  props.map( n => n -> p.getProperty(n.toString)).toMap
-
-    Settings(
-      map.getOrElse("defaultServer", SettingsObject.defaultServer),
-      map.get("batchSize").map(_.toInt).getOrElse(SettingsObject.batchSize),
-      map.get("maxDocuments").map(_.toInt).getOrElse(SettingsObject.maxDocuments),
-      map.getOrElse("defaultStartDate", SettingsObject.defaultStartDate),
-      map.getOrElse("defaultEndDate", SettingsObject.defaultEndDate)
-    )
-  }
-}
 
 object QueryKB extends QueryKB(SettingsObject.fromFile("conf/settings.conf"))
 
@@ -72,9 +48,16 @@ case class QueryKB(settings: Settings)
     val q0 = q.copy(startRecord=0,maximumRecords=1)
     val url = q0.mkURL()
     Console.err.println(url)
-    val n = getNumberOfResultsFromURL(url)
-    Console.err.println("number of matching documents:" + n + " for " + q.query)
-    n
+    import scala.util.{Try,Failure, Success}
+
+    val t: Try[Int] = Try({
+      val n = getNumberOfResultsFromURL(url)
+      //Console.err.println("number of matching documents:" + n + " for " + q.query)
+    n})
+    t match {
+      case Success(value) => value
+      case Failure(exception) => 0
+    }
   }
 
   def getNumberOfResultsFromURL(url:String):Int =

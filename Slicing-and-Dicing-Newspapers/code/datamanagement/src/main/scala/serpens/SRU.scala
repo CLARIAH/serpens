@@ -7,6 +7,7 @@ trait TextQuery
 			case And(t1,t2) => "(" + t1.toQueryString + "+AND+" + t2.toQueryString + ")"
 			case Or(t1,t2) => "(" + t1.toQueryString + "+OR+" + t2.toQueryString + ")"
 			case Disjunction(l @ _*) => "(" + l.map(_.toQueryString).mkString("+OR+")  + ")"
+      case Conjunction(l @ _*) => "(" + l.map(_.toQueryString).mkString("+AND+")  + ")"
 			case ListDisjunction(l) => "(" + l.map(_.toQueryString).mkString("+OR+")  + ")"
 			case ListConjunction(l) => "(" + l.map(_.toQueryString).mkString("+AND+")  + ")"
 			case Phrase(l @ _*) => "%22" + l.map(_.toQueryString).mkString("+")  + "%22"
@@ -19,6 +20,7 @@ case class And(t1:TextQuery, t2:TextQuery) extends TextQuery
 case class Or(t1:TextQuery, t2:TextQuery) extends TextQuery
 case class Phrase(l: SingleTerm*) extends TextQuery
 case class Disjunction(l: TextQuery*) extends TextQuery
+case class Conjunction(l: TextQuery*) extends TextQuery
 case class ListDisjunction(l: List[TextQuery]) extends TextQuery
 case class ListConjunction(l: List[TextQuery]) extends TextQuery
 
@@ -73,15 +75,21 @@ object SRU
   {
      t match 
     {
-      case SingleTerm(term) => if (term.contains("|")) term.split("\\|").toSet else  Set(term)
+      case SingleTerm(term0) => {
+        val term = term0.replaceAll(""""""","") ; if (false && (term.contains("|") || term.contains(" ") || term.contains("+"))) term.split("[| +]").toSet
+        else  Set(term)
+      }
       case And(t1,t2)  => termsIn(t1) ++ termsIn(t2) 
       case Or(t1,t2) => termsIn(t1) ++ termsIn(t2)
       case Disjunction(l @ _*) => l.flatMap(termsIn).toSet
+      case Conjunction(l @ _*) => l.flatMap(termsIn).toSet
       case ListDisjunction(li) => li.flatMap(termsIn).toSet
       case ListConjunction(li) => li.flatMap(termsIn).toSet
       case Phrase(l @ _*) => l.flatMap(termsIn).toSet
     }
   }
+
+  def termsIn(t: Seq[TextQuery]):Set[String] = t.flatMap(termsIn).toSet
 
    def toString(s: SRUQuery) = termsIn(s.query.textQuery).mkString("_")
 
@@ -103,10 +111,11 @@ object SRU
       case SingleTerm(term) =>
         val l = f(term)
         val l1 = if (l.contains(term.toLowerCase)) l else term.toLowerCase :: l
-        ListDisjunction(l1.map( x => SingleTerm(x))) 
+        ListDisjunction(l1.map( x => SingleTerm(x)))
       case And(t1,t2) => And(expand(t1),expand(t2))
       case Or(t1,t2) => Or(expand(t1),expand(t2))
       case Disjunction(l @ _*) => Disjunction(l.map(expand):_*)
+      case Conjunction(l @ _*) => Conjunction(l.map(expand):_*)
       case ListDisjunction(li) => ListDisjunction(li.map(expand))
       case ListConjunction(li) => ListConjunction(li.map(expand)) 
       case Phrase(l @ _*) => // pfft. dit moet toch simpeler kunnen? In ieder geval zou je beter de expansies filteren op voorkomen; of de lijst in queries splitsen
@@ -120,7 +129,7 @@ object SRU
 object testSRU
 {
    import SRU._
-   val expand: String => List[String] = LexiconService.getWordforms
+   val expand: String => List[String] = s => LexiconService.getWordforms(s)
    val expandRestricted: String => List[String]  = x => LexiconService.getWordforms(x).filter(QueryKB.getNumberOfResults(_) > 0)
 
    def main(args:Array[String]) =
