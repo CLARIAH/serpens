@@ -17,7 +17,11 @@ Command line:
 * Create topic model  (100 topics default): ```java serpens.TopicModeling datasets/hermelijn.zip datasets/hermelijn.mallet 30```
 * Print topic keywords: ```java serpens.PruneKeywords datasets/hermelijn.mallet hermelijn.kw```  
 * Create HTML with topics and example documents: ```java serpens.ViewTopics datasets/hermelijn.zip datasets/hermelijn.mallet```
- 
+
+Enhancements for the DBCCC project (version 1.1): 
+* Using main class diamonds.DiamondDownload instead of serpens.Download, the query can be a full CQL (contextual query language) query
+* The querying is combined with a gazetteer of places of interest
+
 Article file format and included metadata
 
 * Pseudo-TEI (title should have head, etc)
